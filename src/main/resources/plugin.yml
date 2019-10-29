@@ -1,0 +1,3 @@
+name: ${project.name}
+main: ht.firefig.cardinal.${project.name}
+version: ${project.version}
