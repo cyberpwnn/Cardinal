@@ -34,16 +34,6 @@ public class Cardinal extends JavaPlugin implements Listener
 		getServer().getScheduler().cancelTasks(this);
 		HandlerList.unregisterAll((Plugin)this);
 	}
-	
-	@EventHandler
-	public void on(PlayerInteractEvent e)
-	{
-		e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLOCK_END_PORTAL_FRAME_FILL, 1f, 1f);
-		
-		IProjectile p = new Projectile(12f, 12, 0.05f, 0.125f , e.getPlayer().getEyeLocation().clone().add(e.getPlayer().getEyeLocation().getDirection().clone().multiply(2)));
-		p.impulse(e.getPlayer().getEyeLocation().getDirection().normalize());
-		sim.fire(p);
-	}
 
 	public static void s(NastyRunnable object)
 	{
