@@ -28,6 +28,28 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2</version>
+        <executions>
+          <execution>
+            <id>runbatchfile</id>
+            <phase>package</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <skip>${skip.copy}</skip>
+          <executable>${project.basedir}/scripts/copy.bat</executable>
+          <arguments>
+            <argument>${project.basedir}\target\${project.name}-${project.version}.jar</argument>
+            <argument>${development.location.dan}</argument>
+          </arguments>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <repositories>
@@ -49,6 +71,7 @@
     </dependency>
   </dependencies>
   <properties>
+    <development.location.dan>${user.home}\Documents\development\server\plugins\${project.name}.jar</development.location.dan>
     <secretary.build>package</secretary.build>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>

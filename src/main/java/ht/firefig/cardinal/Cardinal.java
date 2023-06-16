@@ -1,36 +1,52 @@
 package ht.firefig.cardinal;
 
-import org.bukkit.Sound;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
 
-import ht.firefig.cardinal.projectile.IProjectile;
-import ht.firefig.cardinal.projectile.Projectile;
-import ht.firefig.cardinal.sim.ProjectileSimulation;
+import ht.firefig.cardinal.game.CardinalGame;
+import ht.firefig.cardinal.game.TestGame;
 import ninja.bytecode.shuriken.execution.J;
 import ninja.bytecode.shuriken.execution.NastyRunnable;
 
 public class Cardinal extends JavaPlugin implements Listener
 {
 	public static Cardinal instance;
-	public static final Vector GRAVITY = new Vector(0, -1, 0).multiply(1D / 20D);
-	private ProjectileSimulation sim;
+	private CardinalGame game;
 	
 	public void onEnable()
 	{
 		instance = this;
-		sim = new ProjectileSimulation();
+		game = new TestGame();
 		getServer().getPluginManager().registerEvents(this, this);
+		
+		for(Player i : Bukkit.getOnlinePlayers())
+		{
+			game.join(i);
+		}
+	}
+	
+	@EventHandler
+	public void on(PlayerJoinEvent e)
+	{
+		game.join(e.getPlayer());
+	}
+	
+	@EventHandler
+	public void on(PlayerQuitEvent e)
+	{
+		game.quit(e.getPlayer());
 	}
 	
 	public void onDisable()
 	{
-		sim.shutdown();
+		game.dispose();
 		getServer().getScheduler().cancelTasks(this);
 		HandlerList.unregisterAll((Plugin)this);
 	}

@@ -12,6 +12,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<secretary.monitor>SRC</secretary.monitor>
 		<secretary.build>package</secretary.build>
+		<development.location.dan>${user.home}\Documents\development\server\plugins\${project.name}.jar</development.location.dan>
 	</properties>
 	<build>
 		<resources>
@@ -37,6 +38,28 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2</version>
+				<executions>
+					<execution>
+						<id>runbatchfile</id>
+						<phase>package</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<skip>${skip.copy}</skip>
+					<executable>${project.basedir}/scripts/copy.bat</executable>
+					<arguments>
+						<argument>${project.basedir}\target\${project.name}-${project.version}.jar</argument>
+						<argument>${development.location.dan}</argument>
+					</arguments>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
@@ -49,7 +72,7 @@
 		<dependency>
 			<groupId>ninja.bytecode</groupId>
 			<artifactId>Shuriken</artifactId>
-			<version>1.0</version>
+			<version>1.0.2</version>
 		</dependency>
 	</dependencies>
 	<repositories>
